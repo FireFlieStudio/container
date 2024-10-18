@@ -6,7 +6,16 @@
 # 挂载卷 volumes:
 # -----------------------------
 # ./um-web -> /usr/share/nginx/html/
+
+# ---------------------------------------------------------------------------------------------------
+# 更新请前往下面这个地址下载 release um-web.modern.vXXXX.zip
+# 解压后请重命名为 un-web 覆盖旧版即可
+# For updates, please go to the following address to download the release of um-web.modern.vXXXX.zip
+# After unzipping, please rename it to un-web to overwrite the old version
 # -----------------------------
+# https://git.unlock-music.dev/um/web
+# ---------------------------------------------------------------------------------------------------
+
 networks:
   npm-network:
     external: true
