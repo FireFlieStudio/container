@@ -1,0 +1,57 @@
+# -----------------------------------------
+# 网站的URL 设置在 .env 文件中, 所需的参数如下.
+# The WebsiteUrl are set in the .env file
+# The required parameters are as follows.
+# -----------------------------------------
+# APP_BASE_URL=http://www.example.com
+# -----------------------------------------
+# 默认账号密码 default username and password
+# username:     admin@localhost
+# password:     admin
+# -----------------------------------------
+# 端口 port:
+# -----------------------------------------
+# http:         9000
+# joplin-db:    5432
+# -----------------------------------------
+
+
+networks:
+  npm-network:
+    external: true
+
+services:
+    joplin-db:
+        container_name: joplin-db
+        image: postgres:16
+        restart: unless-stopped
+        networks:
+            - npm-network
+        #ports:
+        #    - "5432:5432"
+        environment:
+            - POSTGRES_USER=admin
+            - POSTGRES_PASSWORD=PjuSgM9CICe9fUd4bHmqlwti11YCotgk
+            - POSTGRES_DB=joplin
+        volumes:
+            - ./data/postgres:/var/lib/postgresql/data
+
+    joplin:
+        container_name: joplin
+        image: joplin/server:latest
+        restart: unless-stopped
+        networks:
+            - npm-network
+        #ports:
+        #    - "9000:9000"
+        environment:
+            - APP_PORT=9000
+            - APP_BASE_URL=${APP_BASE_URL:?APP_BASE_URL required}
+            - DB_CLIENT=pg
+            - POSTGRES_DATABASE=joplin
+            - POSTGRES_USER=admin
+            - POSTGRES_PASSWORD=PjuSgM9CICe9fUd4bHmqlwti11YCotgk
+            - POSTGRES_PORT=5432
+            - POSTGRES_HOST=joplin-db
+        depends_on:
+            - joplin-db
