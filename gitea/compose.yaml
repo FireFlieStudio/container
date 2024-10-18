@@ -1,0 +1,47 @@
+# --------------------------------------------
+# Mysql的 主机地址，数据库名，数据库用户和密码等，都必须写入 .env 文件，所需参数如下
+# The mysql host, database_name, user, passwd
+# must be set in the .env file.
+# The required parameters are as follows.
+# --------------------------------------------
+# HOST=localhost
+# DATABASE_NAME=gitea_database
+# USER=user
+# PASSWD=passwd
+# --------------------------------------------
+# 端口 port:
+# --------------------------------------------
+# http: 3000
+# sshd: 10022
+# --------------------------------------------
+# 挂载卷 volumes:
+# --------------------------------------------
+# ./data -> /data
+# --------------------------------------------
+
+networks:
+  npm-network:
+    external: true
+
+services:
+  gitea:
+    image: gitea/gitea:1.22.3
+    container_name: gitea
+    restart: always
+    networks:
+      - npm-network
+    ports:
+      # - "3000:3000"
+      - "10022:22"
+    environment:
+      - USER_UID=1000
+      - USER_GID=1000
+      - GITEA__database__DB_TYPE=mysql
+      - GITEA__database__HOST=${HOST:?HOST required}
+      - GITEA__database__NAME=${DATABASE_NAME:?DATABASE_NAME required}
+      - GITEA__database__USER=${USER:?USER required}
+      - GITEA__database__PASSWD=${PASSWD:?PASSWD required}
+    volumes:
+      - ./data:/data
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
