@@ -1,0 +1,45 @@
+# -----------------------------------------
+# 子网地址设置在 .env 文件中, 所需的参数如下.
+# The sub_next_address set in the .env file
+# The required parameters are as follows.
+# -----------------------------------------
+# SUBNET_PREFIX="172.22.22"
+# -----------------------------------------
+# 默认用户名和密码 default user and password
+# -----------------------------------------
+# username:     admin@example.com
+# password:     changeme
+# -----------------------------------------
+# 端口 port:
+# -----------------------------------------
+# dashboard: 81
+# http:      80
+# https:     443
+# -----------------------------
+
+networks:
+  npm-network:
+    name: npm-network
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - gateway: ${SUBNET_PREFIX:?SUBNET_PREFIX required}.1
+          subnet: ${SUBNET_PREFIX}.0/24
+    driver_opts:
+      com.docker.network.bridge.name: npm-network
+
+services:
+  nginx-proxy-manager:
+    container_name: nginx-proxy-manager
+    image: docker.io/jc21/nginx-proxy-manager:latest
+    restart: unless-stopped
+    networks:
+      - npm-network
+    ports:
+      - 80:80
+      - 81:81 # DashBoard
+      - 443:443
+    volumes:
+      - ./data:/data
+      - ./letsencrypt:/etc/letsencrypt
