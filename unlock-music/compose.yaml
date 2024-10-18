@@ -1,0 +1,24 @@
+# -----------------------------
+# 端口 port:
+# -----------------------------
+# http: 80 
+# -----------------------------
+# 挂载卷 volumes:
+# -----------------------------
+# ./um-web -> /usr/share/nginx/html/
+# -----------------------------
+networks:
+  npm-network:
+    external: true
+
+services:
+  unlock-music:
+    container_name: unlock-music
+    image: nginx:alpine
+    restart: unless-stopped
+    networks:
+      - npm-network:
+    # ports:
+    #   - 80:80
+    volumes:
+      - ./um-web:/usr/share/nginx/html/
