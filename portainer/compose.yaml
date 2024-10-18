@@ -1,0 +1,29 @@
+# -----------------------------
+# 端口 port:
+# -----------------------------
+# http:   9000
+# https:  9443
+# -----------------------------
+# 挂载卷 volumes:
+# -----------------------------
+# /var/run/docker.sock -> /var/run/docker.sock 
+# ./data               -> /data
+# -----------------------------
+
+networks:
+  npm-network:
+    external: true
+
+services:
+  portainer:
+    container_name: portainer
+    image: 6053537/portainer-ce
+    restart: always
+    networks:
+      - npm-network
+    # ports:
+    #   - 9443:9443
+    #   - 9000:9000
+    volumes:
+    - /var/run/docker.sock:/var/run/docker.sock 
+    - ./data:/data
