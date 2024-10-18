@@ -1,23 +1,28 @@
-# -----------------------------------
-# mysql 用户名 和 密码设置在 .env 文件中, 所需的参数如下. Mysql root 密码默认与 MYSQL_PASSWORD 一致.
+# ------------------------------------------
+# mysql 用户名 和 密码设置在 .env 文件中, 所需的参数如下.
+# Mysql root 密码默认与 MYSQL_PASSWORD 一致.
 # The mysql username and password set in the .env file
 # The required parameters are as follows.
 # By default, the Mysql root password is the same as MYSQL_PASSWORD.
-# -----------------------------------
+# ------------------------------------------
 # MYSQL_USER=user
 # MYSQL_PASSWORD=passwd
-# -----------------------------------
+# ------------------------------------------
 # 端口 port：
-# -----------------------------------
+# ------------------------------------------
 # http:   80
 # mysql:  3306
-# -----------------------------------
+# ------------------------------------------
 # 挂载卷 volumes:
-# -----------------------------------
+# ------------------------------------------
 # ./data ->         /var/lib/mysql
 # ./logs ->         /var/log/mysql
 # ./conf/my.cnf ->  /etc/mysql/my.cnf
-# -----------------------------------
+# ------------------------------------------
+# 根据 conf/my.cnf mysql的binlog已经开启
+# According to the conf/my.cnf configuration
+# The binlog of MySQL is enabled.
+# ------------------------------------------
 
 networks:
   npm-network:
