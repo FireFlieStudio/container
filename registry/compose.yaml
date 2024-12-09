@@ -1,0 +1,29 @@
+# -----------------------------
+# 端口 port:
+# -----------------------------
+# http: 5000
+# -----------------------------
+# 挂载卷 volumes:
+# -----------------------------
+# ./data -> /var/lib/registry
+# -----------------------------
+
+networks:
+  npm-network:
+    external: true
+
+services:
+  registry:
+    privileged: true
+    container_name: registry
+    image: registry
+    restart: unless-stopped
+    # ports:
+    #   - 5000:5000
+    networks:
+      - npm-network
+    environment:
+      # 上游镜像源 The upstream image source
+      REGISTRY_PROXY_REMOTEURL: https://registry-1.docker.io  
+    volumes:
+      - ./data:/var/lib/registry
