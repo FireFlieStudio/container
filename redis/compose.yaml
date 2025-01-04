@@ -25,6 +25,8 @@ services:
     container_name: redis
     networks:
       -  npm-network
+    # port:
+    #   - 6378:6378
     volumes:
       - ./data:/root/redis
       - ./config/redis.conf:/usr/local/etc/redis/redis.conf
