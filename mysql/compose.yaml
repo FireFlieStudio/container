@@ -23,6 +23,8 @@
 # According to the conf/my.cnf configuration
 # The binlog of MySQL is enabled.
 # ------------------------------------------
+# mysql limits: memory: 300M
+# ------------------------------------------
 
 networks:
   npm-network:

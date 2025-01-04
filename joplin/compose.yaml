@@ -4,6 +4,7 @@
 # The required parameters are as follows.
 # -----------------------------------------
 # APP_BASE_URL=http://www.example.com
+# POSTGRES_PASSWORD=PjuSgM9CICe9fUd4bHmqlwti11YCotgk
 # -----------------------------------------
 # 默认账号密码 default username and password
 # username:     admin@localhost
@@ -31,7 +32,7 @@ services:
         #    - "5432:5432"
         environment:
             - POSTGRES_USER=admin
-            - POSTGRES_PASSWORD=PjuSgM9CICe9fUd4bHmqlwti11YCotgk
+            - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:?POSTGRES_PASSWORD required}
             - POSTGRES_DB=joplin
         volumes:
             - ./data/postgres:/var/lib/postgresql/data
@@ -50,7 +51,7 @@ services:
             - DB_CLIENT=pg
             - POSTGRES_DATABASE=joplin
             - POSTGRES_USER=admin
-            - POSTGRES_PASSWORD=PjuSgM9CICe9fUd4bHmqlwti11YCotgk
+            - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
             - POSTGRES_PORT=5432
             - POSTGRES_HOST=joplin-db
         depends_on:
