@@ -1,0 +1,72 @@
+# -------------------------------------------
+# 雷池接入 chaitin safeline waf access
+# 子网地址设置在 .env 文件中, 所需的参数如下.
+# The sub_next_address set in the .env file
+# The required parameters are as follows.
+# -------------------------------------------
+# NPM_SUBNET_PREFIX="172.22.22"
+# SAFELINE_SUBNET_PREFIX="172.22.222"
+# NPM_IP_IN_SAFELINE_NETWORK="100"
+# -------------------------------------------
+# 默认用户名和密码 default user and password
+# -------------------------------------------
+# username:     admin@example.com
+# password:     changeme
+# -------------------------------------------
+# 端口 port:
+# -------------------------------------------
+# dashboard: 81
+# http:      80
+# https:     443
+# -------------------------------------------
+# 挂载卷 volumes:
+# -------------------------------------------
+# ./data        -> /data
+# ./letsencrypt -> /etc/letsencrypt
+# -------------------------------------------
+# 接入流程
+# -------------------------------------------
+# 1. 先启动雷池,再启动本项目。然后在雷池设置npm
+#    管理端口反代，(即: 源站点 172.22.222.100)
+#    设置域名后即可。
+# 2. 当雷池和npm启动后，在npm用 容器名字+端口号 
+#    配置 域名 即可接入npm。
+# 3. 当容器和npm对接成功后，进入雷池后台，设置
+#    站点域名，源站点IP默认为 172.22.222.100。
+# -------------------------------------------
+# 数据流：
+# -------------------------------------------
+#   雷池 --> npm --> 容器
+# -------------------------------------------
+# 接入原因：
+# -------------------------------------------
+#   npm的作用的方便快捷的使用容器名字设置源站点，
+# 雷池需要额外设置IP。接入npm就不需要管理IP了。
+# -------------------------------------------
+
+networks:
+  npm-network:
+    name: npm-network
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - gateway: ${NPM_SUBNET_PREFIX:?NPM_SUBNET_PREFIX required}.1
+          subnet: ${NPM_SUBNET_PREFIX}.0/24
+    driver_opts:
+      com.docker.network.bridge.name: npm-network
+  safeline-ce:
+    external: true
+
+services:
+  nginx-proxy-manager:
+    container_name: nginx-proxy-manager
+    image: docker.io/jc21/nginx-proxy-manager:latest
+    restart: unless-stopped
+    networks:
+      npm-network:
+      safeline-ce:
+        ipv4_address: ${SAFELINE_SUBNET_PREFIX:?SAFELINE_SUBNET_PREFIX required}.${NPM_IP_IN_SAFELINE_NETWORK:?NPM_IP_IN_SAFELINE_NETWORK required}
+    volumes:
+      - ./data:/data
+      - ./letsencrypt:/etc/letsencrypt
