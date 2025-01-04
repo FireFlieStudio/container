@@ -1,0 +1,35 @@
+# ------------------------------------------------------------
+# redis 密码设置在 .env 文件中, 所需的参数如下.
+# The redis password set in the .env file
+# The required parameters are as follows.
+# ------------------------------------------------------------
+# REDIS_PASSWORD=passwd
+# ------------------------------------------------------------
+# 端口 port:
+# ------------------------------------------------------------
+# tcp: 6378
+# ------------------------------------------------------------
+# 挂载卷 volumes:
+# ------------------------------------------------------------
+# ./data              -> /root/redis
+# ./config/redis.conf -> /usr/local/etc/redis/redis.conf
+# ------------------------------------------------------------
+networks:
+  npm-network:
+    external: true
+
+services:
+  redis:
+    image: redis:latest
+    restart: unless-stopped
+    container_name: redis
+    networks:
+      -  npm-network
+    volumes:
+      - ./data:/root/redis
+      - ./config/redis.conf:/usr/local/etc/redis/redis.conf
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD:?REDIS_PASSWORD required}
+      - REDIS_PORT=6379
+      - REDIS_DATABASES=16
+
