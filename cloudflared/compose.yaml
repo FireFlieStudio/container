@@ -1,0 +1,17 @@
+networks:
+  npm-network:
+    external: true
+  safeline-ce:
+    external: true
+
+services:
+  cloudflare-tunnel:
+    image: cloudflare/cloudflared
+    container_name: cloudflare-tunnel
+    hostname: cloudflare-tunnel
+    restart: unless-stopped
+    networks:
+      - npm-network
+    command: tunnel run
+    environment:
+      - "TUNNEL_TOKEN=${TUNNEL_TOKEN:?TUNNEL_TOKEN required}"
