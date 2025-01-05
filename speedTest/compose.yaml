@@ -1,0 +1,33 @@
+# -----------------------------
+# 端口 port:
+# -----------------------------
+# http: 8080
+# -----------------------------
+
+
+networks:
+  npm-network:
+    external: true
+
+services:
+  speed-test:
+    container_name: speed-test
+    image: ghcr.io/librespeed/speedtest:latest-alpine
+    restart: unless-stopped
+    networks:
+      - npm-network
+    # ports:
+    #   - "80:8080"
+    environment:
+      MODE: standalone
+      #TITLE: "LibreSpeed"
+      #TELEMETRY: "false"
+      #ENABLE_ID_OBFUSCATION: "false"
+      #REDACT_IP_ADDRESSES: "false"
+      #PASSWORD:
+      #EMAIL:
+      #DISABLE_IPINFO: "false"
+      #IPINFO_APIKEY: "your api key"
+      #DISTANCE: "km"
+      #WEBPORT: 8080
+    
