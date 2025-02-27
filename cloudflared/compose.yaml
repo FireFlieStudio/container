@@ -1,15 +1,10 @@
-networks:
-  npm-network:
-    external: true
-
 services:
   cloudflare-tunnel:
     image: cloudflare/cloudflared
     container_name: cloudflare-tunnel
     hostname: cloudflare-tunnel
     restart: unless-stopped
-    networks:
-      - npm-network
+    network_mode: "host"
     command: tunnel run
     environment:
       - "TUNNEL_TOKEN=${TUNNEL_TOKEN:?TUNNEL_TOKEN required}"
